@@ -8,26 +8,43 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:200,300,400,700">
     <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
     <link rel="stylesheet" href="{{url_for('static',filename='css/main.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/nav.css')}}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script type="text/javascript" src="{{url_for('static',filename='js/form.js')}}"></script>
     <title>Portfolio</title>
 </head>
 
 <body>
+    <nav class="navbar">
+        <span class="navbar-toggle" id="js-navbar-toggle">
+            <i class="fa fa-bars"></i>
+        </span>
+        <a href="#" class="logo">Portfolio</a>
+        <ul class="main-nav" id="js-menu">
+            <li>
+                <a href="#" class="nav-links">Timeline</a>
+            </li>
+            <li>
+                <a href="#" class="nav-links">Profile</a>
+            </li>
+            <li>
+                <a href="#" class="nav-links">Logout</a>
+            </li>
+        </ul>
+    </nav>
     <div class="form" id="form1">
         <section class="user">
             <div class="user_options-container">
                 <div class="user_options-text">
                     <div class="user_options-unregistered">
                         <h2 class="user_unregistered-title">Don't have an account?</h2>
-                        <p class="user_unregistered-text">Banjo tote bag bicycle rights, High Life sartorial cray craft
-                            beer whatever street art fap.</p>
+                        <p class="user_unregistered-text">Making a new account is as easy as 1,2,3</p>
                         <button class="user_unregistered-signup" id="new-button">SignUp</button>
                     </div>
 
                     <div class="user_options-registered">
                         <h2 class="user_registered-title">Have an account?</h2>
-                        <p class="user_registered-text">Banjo tote bag bicycle rights, High Life sartorial cray craft
-                            beer whatever street art fap.</p>
+                        <p class="user_registered-text">What you are waiting for? Come on board. Login Here!</p>
                         <button class="user_registered-login" id="login-button">Login</button>
                     </div>
                 </div>
@@ -74,6 +91,32 @@
             </div>
         </section>
     </div>
+    <script>
+        var mainNav = document.getElementById("js-menu");
+        var navBarToggle = document.getElementById("js-navbar-toggle");
+
+        navBarToggle.addEventListener("click", function () {
+            mainNav.classList.toggle("active");
+        });
+        //Forms
+        var signupButton = document.getElementById('new-button'),
+            loginButton = document.getElementById('login-button'),
+            userForms = document.getElementById('user_options-forms');
+
+
+        // // Add event listener to the "Sign Up" button
+        signupButton.addEventListener('click', () => {
+            userForms.classList.remove('login-click')
+            userForms.classList.add('signup-click')
+        }, false)
+
+
+        // // Add event listener to the "Login" button
+        loginButton.addEventListener('click', () => {
+            userForms.classList.remove('signup-click')
+            userForms.classList.add('login-click')
+        }, false)
+    </script>
 </body>
 
 </html>
