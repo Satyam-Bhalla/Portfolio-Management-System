@@ -2,3 +2,5 @@ Version 1:
 	Basic Flask app printing only String
 Version 2:
 	Login and Signup form without CSS
+Version 3:
+	Added CSS to Login and SignUp
