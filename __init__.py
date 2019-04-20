@@ -19,5 +19,9 @@ class Users(db.Model):
 def index():
 	return render_template('index.html')
 
+@app.route('/dash',methods=['POST','GET'])
+def dash():
+	return render_template('dashboard.html')
+
 if __name__ == '__main__':
 	app.run(debug=True)
