@@ -98,6 +98,84 @@
             width: 150px;
             height: 25px;
         }
+
+        .demo {
+            margin: 64px 0;
+        }
+
+        /**
+ * Switch Styles
+ */
+        /* Variables */
+        /* Switch Container */
+        .switch {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Hide the checkbox input (only needed for `:checked` property) */
+        .switch-input {
+            display: none;
+        }
+
+        /* Switch */
+        .switch-label {
+            display: block;
+            width: 48px;
+            height: 16px;
+            text-indent: -150%;
+            clip: rect(0 0 0 0);
+            color: transparent;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            /* Switch Rail & Knob */
+            /* Switch Rail */
+            /* Switch Knob */
+        }
+
+        .switch-label:before,
+        .switch-label:after {
+            content: "";
+            display: block;
+            position: absolute;
+            cursor: pointer;
+        }
+
+        .switch-label:before {
+            width: 100%;
+            height: 100%;
+            background-color: #dedede;
+            border-radius: 9999em;
+            transition: background-color 0.25s ease;
+        }
+
+        .switch-label:after {
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #fff;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.45);
+            transition: left 0.25s ease;
+            margin-top: 2px;
+        }
+
+        /* When input is checked */
+        .switch-input:checked+.switch-label {
+            /* Switch Rail */
+            /* Switch Knob */
+        }
+
+        .switch-input:checked+.switch-label:before {
+            background-color: #89c12d;
+        }
+
+        .switch-input:checked+.switch-label:after {
+            left: 24px;
+        }
     </style>
 </head>
 
@@ -109,61 +187,92 @@
         <a href="#" class="logo">Portfolio</a>
         <ul class="main-nav" id="js-menu">
             <li>
-                <a href="#" class="nav-links">Timeline</a>
+                <a href="{{url_for('timel')}}" class="nav-links">Timeline</a>
             </li>
             <li>
                 <a href="#" class="nav-links">Profile</a>
             </li>
+            {% if session['username'] %}
             <li>
-                <a href="#" class="nav-links">Logout</a>
+                <a href="{{url_for('log')}}" class="nav-links">Logout</a>
             </li>
+            {% endif %}
         </ul>
     </nav>
     <div class="dashboard">
-        <div class="row" style="padding-top:5%; padding-bottom: 5%;">
-            <div class="col-md-4" style="text-align:center; border-right: 1px solid #888;">
-                <div class="containers">
-                    <div class="imageWrapper">
-                        <img class="image" src="https://www.kodefork.com/static/users/images/user.png">
+        <form method="POST" action="" enctype="multipart/form-data">
+            <div class="container">
+                <div class="row" style="padding-top:5%; padding-bottom: 5%;">
+                    <div class="col-md-4" style="text-align:center; border-right: 1px solid #888;">
+                        <div class="containers">
+                            {% if photo %}
+                            <div class="imageWrapper">
+                                <img class="image" src="data:image/jpeg;base64,{{photo}}">
+                            </div>
+                            {% else %}
+                            <div class="imageWrapper">
+                                <img class="image" src="https://www.kodefork.com/static/users/images/user.png">
+                            </div>
+                            {% endif %}
+                        </div>
+                        <button class="file-upload">
+                            <input type="file" name="image" class="file-input">Choose Image
+                        </button>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form">
+                            Name:
+                            <input type="text" name="n" value="{{name}}">
+                            <br>
+                            <br>
+                            Email:
+                            <input type="email" name="e" value="{{email}}">
+                            <br>
+                            <br>
+                            Mobile No.:
+                            <input type="tel" name="m" value="{{mob}}">
+                            <br>
+                            <br>
+                            GitHub Profile:
+                            <input type="text" name="git" value="{{git}}">
+                            <br>
+                            <br>
+                            About Me:
+                            <textarea name="about"></textarea>
+                            <br>
+                            <br>
+                            {% if k == 5 %}
+                            <button type="submit" class="btn btn-success">Save</button>
+                            <a href="{{url_for('delete')}}" class="btn btn-danger">Delete Profile</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="demo">
+                            <div class="switch">
+                                <input name="pri" onclick="func()" value="true" id="switch-1" type="checkbox"
+                                    class="switch-input">
+                                <label for="switch-1" class="switch-label">Switch</label>
+                            </div>
+                            <p>Make Your Profile Private</p>
+                        </div>
+                        <input type="hidden" value="{{z}}" id="i">
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Your Profile Link</label>
+                            <input readonly value="{{url}}" type="text" class="form-control" id="exampleInputPassword1">
+                        </div>
                     </div>
                 </div>
-                <button class="file-upload">
-                    <input type="file" name="image" class="file-input">Choose File
-                </button>
             </div>
-            <div class="col-md-7">
-                <div class="form">
-                    Name:
-                    <input type="text">
-                    <br>
-                    <br>
-                    Email:
-                    <input type="email">
-                    <br>
-                    <br>
-                    Mobile No.:
-                    <input type="tel">
-                    <br>
-                    <br>
-                    GitHub Profile:
-                    <input type="text">
-                    <br>
-                    <br>
-                    About Me:
-                    <textarea></textarea>
-                    <br>
-                    <br>
-                    <button type="button" class="btn btn-danger">Delete Profile</button>
-                </div>
-            </div>
-        </div>
+        </form>
     </div>
     <footer>
-        <p>Powered by &copy; You 2019</p>
+        <p>Build with love by <a href="https://github.com/Satyam-Bhalla" target="_blank">Satyam</a></p>
     </footer>
     <script>
         var mainNav = document.getElementById("js-menu");
         var navBarToggle = document.getElementById("js-navbar-toggle");
+        var i = document.getElementById("i");
 
         navBarToggle.addEventListener("click", function () {
             mainNav.classList.toggle("active");
@@ -184,6 +293,17 @@
             // read the image file as a data URL.
             reader.readAsDataURL(this.files[0]);
         });
+
+        var check = document.getElementById("switch-1");
+        var input = document.getElementById("exampleInputPassword1");
+        if (i.value == "0") {
+            console.log(i.value);
+            check.checked = false;
+        } else if (i.value == "1") {
+            console.log(i.value);
+            check.checked = true;
+        }
+        console.log(typeof (i.value));
     </script>
 </body>
 

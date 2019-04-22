@@ -8,3 +8,11 @@ Version 4:
 	Header 
 Version 5:
 	Footer and Dashboard
+Version 6:
+	Database Added to Login and Signup
+Version 7:
+	Users Profile linked to database. Now user can add image and other information. Delete Profile feature working perfectly.
+Version 8:
+	Timeline feed working. 
+Version 9:
+	Bug Fixes

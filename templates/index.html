@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:200,300,400,700">
     <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
     <link rel="stylesheet" href="{{url_for('static',filename='css/nav.css')}}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{url_for('static',filename='css/main.css')}}">
     <script type="text/javascript" src="{{url_for('static',filename='js/form.js')}}"></script>
@@ -20,17 +21,6 @@
             <i class="fa fa-bars"></i>
         </span>
         <a href="#" class="logo">Portfolio</a>
-        <ul class="main-nav" id="js-menu">
-            <li>
-                <a href="#" class="nav-links">Timeline</a>
-            </li>
-            <li>
-                <a href="#" class="nav-links">Profile</a>
-            </li>
-            <li>
-                <a href="#" class="nav-links">Logout</a>
-            </li>
-        </ul>
     </nav>
     <div class="form" id="form1">
         <section class="user">
@@ -52,16 +42,18 @@
                 <div class="user_options-forms" id="user_options-forms">
                     <div class="user_forms-login">
                         <h2 class="forms_title">Login</h2>
-                        <form class="forms_form">
+                        <form class="forms_form" method="POST" action="">
                             <fieldset class="forms_fieldset">
                                 <div class="forms_field">
-                                    <input type="email" placeholder="Email" class="forms_field-input" required
-                                        autofocus />
+                                    <input name="lemail" type="email" placeholder="Email" class="forms_field-input"
+                                        required autofocus />
                                 </div>
                                 <div class="forms_field">
-                                    <input type="password" placeholder="Password" class="forms_field-input" required />
+                                    <input name="lpass" type="password" placeholder="Password" class="forms_field-input"
+                                        required />
                                 </div>
                             </fieldset>
+                            <input type="hidden" value="login" name="test">
                             <div class="forms_buttons">
                                 <button type="button" class="forms_buttons-forgot">Forgot password?</button>
                                 <input type="submit" value="Log In" class="forms_buttons-action">
@@ -70,18 +62,26 @@
                     </div>
                     <div class="user_forms-signup">
                         <h2 class="forms_title">Sign Up</h2>
-                        <form class="forms_form">
+                        <form class="forms_form" method="POST" action="">
                             <fieldset class="forms_fieldset">
                                 <div class="forms_field">
-                                    <input type="text" placeholder="Full Name" class="forms_field-input" required />
+                                    <input type="text" name="name" placeholder="Full Name" class="forms_field-input"
+                                        required />
                                 </div>
                                 <div class="forms_field">
-                                    <input type="email" placeholder="Email" class="forms_field-input" required />
+                                    <input type="email" name="semail" placeholder="Email" class="forms_field-input"
+                                        required />
                                 </div>
                                 <div class="forms_field">
-                                    <input type="password" placeholder="Password" class="forms_field-input" required />
+                                    <input type="text" name="mobile" placeholder="Mobile No." class="forms_field-input"
+                                        required />
+                                </div>
+                                <div class="forms_field">
+                                    <input type="password" name="spass" placeholder="Password" class="forms_field-input"
+                                        required />
                                 </div>
                             </fieldset>
+                            <input type="hidden" value="signup" name="test">
                             <div class="forms_buttons">
                                 <input type="submit" value="Sign up" class="forms_buttons-action">
                             </div>
@@ -90,9 +90,26 @@
                 </div>
             </div>
         </section>
+        {% if msg == 'success' %}
+        <div class="alert alert-success" role="alert">
+            Account Created Successfully!
+        </div>
+        {% elif msg == 'error' %}
+        <div class="alert alert-danger" role="alert">
+            There was something wrong :(
+        </div>
+        {% elif msg == 'wrong' %}
+        <div class="alert alert-danger" role="alert">
+            Invalid Credentials :(
+        </div>
+        {% elif msg == 'warning' %}
+        <div class="alert alert-warning" role="alert">
+            Account Already exists with entered email
+        </div>
+        {% endif %}
     </div>
     <footer>
-        <p>Powered by &copy; You 2019</p>
+        <p>Build with love by <a href="https://github.com/Satyam-Bhalla" target="_blank">Satyam</a></p>
     </footer>
     <script>
         var mainNav = document.getElementById("js-menu");
