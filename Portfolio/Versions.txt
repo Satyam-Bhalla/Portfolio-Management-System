@@ -1,0 +1,16 @@
+Version 1:
+	Basic Flask app printing only String
+Version 2:
+	Login and Signup form without CSS
+Version 3:
+	Added CSS to Login and SignUp
+Version 4:
+	Header 
+Version 5:
+	Footer and Dashboard
+Version 6:
+	Database Added to Login and Signup
+Version 7:
+	Users Profile linked to database. Now user can add image and other information. Delete Profile feature working perfectly.
+Version 8:
+	Timeline feed working. 
