@@ -5,7 +5,7 @@ Version 2:
 Version 3:
 	Added CSS to Login and SignUp
 Version 4:
-	Header 
+	Header
 Version 5:
 	Footer and Dashboard
 Version 6:
