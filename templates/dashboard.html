@@ -269,7 +269,7 @@
                         <button class="file-upload">
                             <input type="file" name="image" class="file-input">Choose Image
                         </button>
-                        {% if k == 5 %}
+                        {% if test == 5 %}
                         <div class="demo">
                             <div class="switch">
                                 <input name="pri" onclick="func()" value="true" id="switch-1" type="checkbox"
@@ -278,7 +278,7 @@
                             </div>
                             <p>Make Your Profile Private</p>
                         </div>
-                        <input type="hidden" value="{{z}}" id="i">
+                        <input type="hidden" value="{{privateBool}}" id="i">
                         <div id="h" class="form-group">
                             <label for="exampleInputPassword1">Your Profile Link</label>
                             <input onclick="copyFunc()" readonly value="{{url}}" type="text" class="form-control"
@@ -308,6 +308,7 @@
                                     value="{{mob}}">
                             </div>
                         </div>
+                        {% if test == 5 %}
                         <div class="form-group row">
                             <label for="inputGit" class="col-sm-4 col-form-label">GitHub Profile Link</label>
                             <div class="col-sm-8">
@@ -321,7 +322,23 @@
                                     rows="3">{{ab}}</textarea>
                             </div>
                         </div>
-                        {% if k == 5 %}
+                        {% else %}
+                        <div class="form-group row">
+                            <label for="inputGit" class="col-sm-4 col-form-label">GitHub Profile Link</label>
+                            <div class="col-sm-8">
+                                <input readonly type="text" value="{{git}}" name="git" class="form-control"
+                                    id="inputGit">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="exampleFormControlTextarea1" class="col-sm-4 col-form-label">About Me: </label>
+                            <div class="col-sm-8">
+                                <textarea readonly class="form-control" name="about" id="exampleFormControlTextarea1"
+                                    rows="3">{{ab}}</textarea>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if test == 5 %}
                         <div class="form-group row">
                             <div class="col-sm-6">
                                 <button type="submit" class="btn btn-success">Save</button>

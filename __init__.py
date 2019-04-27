@@ -1,6 +1,7 @@
-from flask import Flask,render_template, request, url_for, session, redirect
+from flask import Flask,render_template, request, url_for, session, redirect, jsonify
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from datetime import datetime
+import requests
 import sqlite3
 import base64
 import re
@@ -32,14 +33,14 @@ def index():
 			if request.form['test'] == 'login':
 				conn = sqlite3.connect("data.db")
 				c = conn.cursor()
-				e = request.form['lemail']
-				c.execute("SELECT * FROM users WHERE email=?",(e,))
-				check = c.fetchone()
+				email = request.form['lemail']
+				c.execute("SELECT * FROM users WHERE email=?",(email,))
+				user = c.fetchone()
 				conn.commit()
 				conn.close()
-				if check:
-					if check[4] == request.form['lpass']:
-						session['username'] = str(e)
+				if user:
+					if user[4] == request.form['lpass']:
+						session['username'] = str(email)
 						return redirect(url_for('dash'))
 					return render_template('index.html',msg='wrong')
 				return render_template('index.html',msg='wrong')
@@ -47,20 +48,21 @@ def index():
 				conn = sqlite3.connect("data.db")
 				c = conn.cursor()
 				names = request.form['name']
-				e = request.form['semail']
+				email = request.form['semail']
 				mobile = request.form['mobile']
 				spass = request.form['spass']
-				c.execute("SELECT * FROM users WHERE email=?",(e,))
+				c.execute("SELECT * FROM users WHERE email=?",(email,))
 				data = c.fetchone()
 				if data:
 					msg = 'warning'
 					return render_template('index.html', msg=msg)
 				else:
-					c.execute("INSERT INTO users(name, email, mobile, password) VALUES(?,?,?,?)",(names, e, mobile, spass))
+					c.execute("INSERT INTO users(name, email, mobile, password) VALUES(?,?,?,?)",(names, email, mobile, spass))
 				conn.commit()
 				conn.close()
 			return render_template('index.html', msg='success')
-		except:
+		except Exception as e:
+			return str(e)
 			return render_template('hidden.html')
 	return render_template('index.html')
 
@@ -68,7 +70,7 @@ def index():
 def dash():
 	if session['username']:
 		try:
-			k = 5
+			test = 5
 			token = s.dumps(session['username'])
 			url = request.url_root + 'prof/'+ token
 			photo = ""
@@ -87,14 +89,14 @@ def dash():
 				git = data[2]
 				ab = data[4]
 				photo = data[3]
-				z = data[6]
+				privateBool = data[6]
 			else:
-				z = 0
+				privateBool = 0
 			if request.method == "POST":
 				pic = ""
-				z = 0
+				privateBool = 0
 				if 'pri' in request.form:
-					z = 1
+					privateBool = 1
 				conn = sqlite3.connect("data.db")
 				c = conn.cursor()
 				c.execute("SELECT * FROM users WHERE email=?",(session['username'],))
@@ -111,12 +113,12 @@ def dash():
 				c.execute("SELECT id FROM users WHERE email=?",(session['username'],))
 				i = c.fetchone()
 				if data:
-					c.execute("UPDATE details SET git=?,image=?,about=?, link=?",(request.form['git'],pic,request.form['about'],z))
+					c.execute("UPDATE details SET git=?,image=?,about=?, link=?",(request.form['git'],pic,request.form['about'],privateBool))
 				else:
-					c.execute("INSERT INTO details(f_id, git, image, about,token, link) VALUES(?,?,?,?,?,?)",(i[0],request.form['git'],pic,request.form['about'],token,z))
+					c.execute("INSERT INTO details(f_id, git, image, about,token, link) VALUES(?,?,?,?,?,?)",(i[0],request.form['git'],pic,request.form['about'],token,privateBool))
 				conn.commit()
 				return redirect(url_for('dash'))
-			return render_template('dashboard.html',ab=ab,k=k,z=z,url=url,photo=photo,name=name, git=git, mob=mob,email=email)
+			return render_template('dashboard.html',ab=ab,test=test,privateBool=privateBool,url=url,photo=photo,name=name, git=git, mob=mob,email=email)
 		except Exception as e:
 			return str(e)
 			return render_template('hidden.html')
@@ -135,14 +137,21 @@ def profile(link):
 		data = c.fetchone()
 		name = new_id[1]
 		email = new_id[2]
-		git = data[2]
 		mob = new_id[3]
-		photo = data[3]
-		z = data[6]
-		if z == 0:
-			return render_template('dashboard.html',z=z,url=url,photo=photo,name=name, git=git, mob=mob,email=email)
+		git = ""
+		photo =""
+		ab = ""
+		privateBool = 0
+		if data:
+			git = data[2]
+			photo = data[3]
+			ab = data[4]
+			privateBool = data[6]
+		if privateBool == 0:
+			return render_template('dashboard.html',ab=ab,privateBool=privateBool,url=url,photo=photo,name=name, git=git, mob=mob,email=email)
 		return render_template('hidden.html')
-	except:
+	except Exception as e:
+		return str(e)
 		return render_template('hidden.html')
 
 @app.route('/search',methods=['POST'])
@@ -170,27 +179,26 @@ def search():
 def timel():
 	if session['username']:
 		try:
-			conn = sqlite3.connect("data.db")
-			c = conn.cursor()
-			c.execute("SELECT * FROM timeline ORDER BY id DESC ")
-			posts = c.fetchall()
-			conn.close()
+			response = requests.get("http://127.0.0.1:8000/")
+			r = response.json()
+			posts = r['timeline']
 			if request.method == 'POST':
-				time = datetime.now().strftime("%B %d, %Y %I:%M%p")
+				user_email = session['username']
 				img = request.files['chooseFile']
-				a = img.read()
-				picc = base64.b64encode(a)
-				pic = picc.decode("utf-8")
-				conn = sqlite3.connect("data.db")
-				c = conn.cursor()
-				c.execute("SELECT * FROM users WHERE email=?",(session['username'],))
-				i = c.fetchone()
-				c.execute("INSERT INTO timeline(f_id, words, image, dateColumn,auth) VALUES(?,?,?,?,?)",(i[0],request.form['data'],pic,time,i[1]))
-				conn.commit()
-				conn.close()
+				if img:
+					file = img.read()
+					b64 = base64.b64encode(file)
+					pic = b64.decode('utf-8')
+				else:
+					pic = "0"
+				text = '--No Caption--'
+				if request.form['data']:
+					text = request.form['data']
+				response = requests.post(f"http://127.0.0.1:8000/{user_email}/img&{pic}/{text}")
 				return redirect(url_for('timel'))
 			return render_template('timeline.html',posts=posts)
-		except:
+		except Exception as e:
+			return str(e)
 			return render_template('hidden.html')
 	return redirect(url_for('index'))
 
