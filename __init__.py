@@ -188,10 +188,14 @@ def timel():
 				if img:
 					file = img.read()
 					b64 = base64.b64encode(file)
-					pic = b64.decode('utf-8')
+					picc = b64.decode('utf-8')
+					if picc[0] == '/':
+						pic = picc[1:]
+					else:
+						pic = picc
 				else:
 					pic = "0"
-				text = '--No Caption--'
+				text = '.'
 				if request.form['data']:
 					text = request.form['data']
 				response = requests.post(f"http://127.0.0.1:8000/{user_email}/img&{pic}/{text}")
@@ -211,6 +215,7 @@ def delete():
 			c.execute("DELETE FROM users WHERE email=?",(session['username'],))
 			conn.commit()
 			conn.close()
+			session['username'] = None
 			return redirect(url_for('index'))
 		except:
 			return render_template('hidden.html')

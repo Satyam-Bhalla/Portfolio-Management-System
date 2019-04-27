@@ -234,7 +234,7 @@
             <ul class="navbar-nav mr-auto">
                 {% if session['username'] %}
                 <li class="nav-item">
-                    <a href="#" class="nav-links">Profile</a>
+                    <a href="{{url_for('dash')}}" class="nav-links">Profile</a>
                 </li>
                 <li class="nav-item">
                     <a href="{{url_for('timel')}}" class="nav-links">Timeline</a>
@@ -266,10 +266,10 @@
                             </div>
                             {% endif %}
                         </div>
+                        {% if test == 5 %}
                         <button class="file-upload">
                             <input type="file" name="image" class="file-input">Choose Image
                         </button>
-                        {% if test == 5 %}
                         <div class="demo">
                             <div class="switch">
                                 <input name="pri" onclick="func()" value="true" id="switch-1" type="checkbox"
@@ -326,15 +326,15 @@
                         <div class="form-group row">
                             <label for="inputGit" class="col-sm-4 col-form-label">GitHub Profile Link</label>
                             <div class="col-sm-8">
-                                <input readonly type="text" value="{{git}}" name="git" class="form-control"
+                                <input readonly type="text" value="{{git}}" name="git" class="form-control-plaintext"
                                     id="inputGit">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="exampleFormControlTextarea1" class="col-sm-4 col-form-label">About Me: </label>
                             <div class="col-sm-8">
-                                <textarea readonly class="form-control" name="about" id="exampleFormControlTextarea1"
-                                    rows="3">{{ab}}</textarea>
+                                <textarea readonly class="form-control-plaintext" name="about"
+                                    id="exampleFormControlTextarea1" rows="3">{{ab}}</textarea>
                             </div>
                         </div>
                         {% endif %}

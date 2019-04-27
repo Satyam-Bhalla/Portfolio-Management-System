@@ -26,7 +26,7 @@
             <ul class="navbar-nav mr-auto">
                 {% if session['username'] %}
                 <li class="nav-item">
-                    <a href="#" class="nav-links">Profile</a>
+                    <a href="{{url_for('dash')}}" class="nav-links">Profile</a>
                 </li>
                 <li class="nav-item">
                     <a href="{{url_for('timel')}}" class="nav-links">Timeline</a>

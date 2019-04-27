@@ -26,7 +26,11 @@ def add(email, img=None, text=None):
 	c.execute("SELECT * FROM users WHERE email=?",(email,))
 	result = c.fetchone()
 	auth = result[1]
-	c.execute("INSERT INTO timeline(f_id, words, image, dateColumn, auth) VALUES (?,?,?,?,?)",(result[0], text, img, dateColumn, auth))
+	if img[0] == '9':
+		image = f'/{img}'
+	else:
+		image = img
+	c.execute("INSERT INTO timeline(f_id, words, image, dateColumn, auth) VALUES (?,?,?,?,?)",(result[0], text, image, dateColumn, auth))
 	conn.commit()
 	conn.close()
 	return jsonify({'success':'200'})
