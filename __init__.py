@@ -171,8 +171,9 @@ def search():
 			for j in b:
 				c.execute("SELECT * FROM details WHERE f_id=?",(i[0],))
 				h = c.fetchone()
-				details.append(h)
-				doc.append(i)
+				if i not in doc:
+					doc.append(i)
+					details.append(h)
 		return render_template('s.html',doc=doc,details=details,url=url)
 
 @app.route('/timeline/', methods=['POST','GET'])
